@@ -1,0 +1,7 @@
+IMPORT * FROM RatAnomaly;
+IMPORT * FROM DKProCoreTypes;
+
+WORDLIST Fillers = 'ruta-script/Fillers.txt';
+
+Token{INLIST(Fillers) -> CREATE(RatReadabilityAnomaly, "explanation" = 
+    "Vermeiden Sie Füllwörter.", "severity" = "Major", "anomalyName" = "Fillers")};

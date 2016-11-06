@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>Utility</name>
+    <description />
+    <version>1.8.0</version>
+    <vendor>Ubiquitous Knowledge Processing (UKP) Lab, Technische
+        Universität Darmstadt</vendor>
+    <types>
+        <typeDescription>
+            <name>de.tudarmstadt.ukp.dkpro.core.performance.type.TimerAnnotation</name>
+            <description>Used for storing timing information (e.g. for
+                performance testing).</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+            <features>
+                <featureDescription>
+                    <name>startTime</name>
+                    <description />
+                    <rangeTypeName>uima.cas.Long</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>endTime</name>
+                    <description />
+                    <rangeTypeName>uima.cas.Long</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>name</name>
+                    <description>The name of the timer.
+                        Used to automatically determine whether this is an upstream or
+                        downstream timer.</description>
+                    <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+            </features>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

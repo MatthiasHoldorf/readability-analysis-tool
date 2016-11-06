@@ -1,0 +1,61 @@
+<assembly>
+    <id>tarball</id>
+
+    <formats>
+        <format>tar</format>
+    </formats>
+
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>src/main/cmd</directory>
+            <outputDirectory />
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/doc</directory>
+            <outputDirectory />
+        </fileSet>
+        <fileSet>
+            <directory>src/main/output-directory</directory>
+            <outputDirectory>examples/output-directory/
+            </outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/config</directory>
+            <outputDirectory>config/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/examples</directory>
+            <includes>
+                <include>*/*.docx</include>
+            </includes>
+            <outputDirectory>examples/
+            </outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/examples</directory>
+            <includes>
+                <include>*/*.xml</include>
+            </includes>
+            <outputDirectory>examples/
+            </outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/examples</directory>
+            <includes>
+                <include>*/*.cmd</include>
+            </includes>
+            <outputDirectory>examples/</outputDirectory>
+            <filtered>true</filtered>
+        </fileSet>
+    </fileSets>
+</assembly>

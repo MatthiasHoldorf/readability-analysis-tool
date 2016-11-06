@@ -1,0 +1,7 @@
+IMPORT * FROM RatAnomaly;
+IMPORT * FROM DKProCoreTypes;
+
+WORDLIST ModalVerbs = 'ruta-script/ModalVerbs.txt';
+
+Token{INLIST(ModalVerbs) -> CREATE(RatReadabilityAnomaly, "explanation" = 
+    "Vermeiden Sie Modalverben.", "severity" = "Minor", "anomalyName" = "ModalVerb")};

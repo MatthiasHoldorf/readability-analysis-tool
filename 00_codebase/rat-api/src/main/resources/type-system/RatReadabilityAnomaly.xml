@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>RatReadabilityAmonaly</name>
+    <types>
+        <typeDescription>
+            <name>de.qaware.rat.type.RatReadabilityAnomaly
+            </name>
+            <description>A readability anomaly that is detected by RAT.
+            </description>
+            <supertypeName>de.qaware.rat.type.RatAnomaly</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

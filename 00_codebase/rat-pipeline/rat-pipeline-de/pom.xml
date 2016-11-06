@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.qaware</groupId>
+        <artifactId>rat-pipeline</artifactId>
+		<version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>rat-pipeline-de</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.qaware</groupId>
+            <artifactId>rat-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>uimaj-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>uimafit-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>ruta-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-asl</artifactId>
+            <version>${dkpro.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.io.text-asl</artifactId>
+            <version>${dkpro.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.matetools-gpl</artifactId>
+            <version>${dkpro.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.readability-asl</artifactId>
+            <version>${dkpro.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.textcat-asl</artifactId>
+            <version>${dkpro.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId> de.tudarmstadt.ukp.dkpro.core.performance-asl</artifactId>
+            <version>${dkpro.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.qaware</groupId>
+            <artifactId>rat-statistics</artifactId>
+        </dependency>
+    </dependencies>
+</project>

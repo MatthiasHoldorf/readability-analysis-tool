@@ -1,0 +1,6 @@
+IMPORT * FROM Anomaly;
+IMPORT * FROM DKProCoreTypes;
+
+Sentence{COUNT(de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.NN, 5, 10) -> CREATE(
+    RatReadabilityAnomaly, "explanation" = "Dieser Satz enthaelt mehr als 5 Nomen.", "category" = 
+    "NominalStyle", "severity" = "Critical", "anomalyName" = "NominalStyle")};

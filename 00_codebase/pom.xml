@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.qaware</groupId>
+    <artifactId>rat</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Readability Analysis Tool</name>
+    <url>https://github.com/MatthiasHoldorf/rat-readability-analysis-tool</url>
+
+    <distributionManagement>
+        <repository>
+            <id>rat-release</id>
+            <url>file://${project.build.directory}/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>rat-snapshot</id>
+            <url>file://${project.build.directory}/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <scm>
+        <url>https://github.com/MatthiasHoldorf/rat-readability-analysis-tool</url>
+        <developerConnection>scm:git:https://github.com/MatthiasHoldorf/rat-readability-analysis-tool</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <organization>
+        <name>QAware GmbH</name>
+        <url>http://www.qaware.de</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Matthias Holdorf</name>
+            <email>matthias.holdorf@gmail.com</email>
+            <roles>
+                <role>Thesis Student</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>rat-executor</module>
+        <module>rat-common</module>
+        <module>rat-api</module>
+        <module>rat-integrationtest</module>
+        <module>rat-codec</module>
+        <module>rat-pipeline</module>
+        <module>rat-statistics</module>
+    </modules>
+
+    <properties>
+        <project.scm.id>rat-release</project.scm.id>
+
+        <java.version>1.8</java.version>
+        <dkpro.core.version>1.8.0</dkpro.core.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- increase timeout for unit-tests -->
+        <surefire.timeout>240</surefire.timeout>
+
+        <!-- Sonar properties for multi-module coverage -->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <jacoco.report.directory>${user.home}</jacoco.report.directory>
+        <jacoco.report.fileName>qaware-rat-jacoco-all.exec</jacoco.report.fileName>
+        <sonar.jacoco.reportPath>${jacoco.report.directory}/${jacoco.report.fileName}</sonar.jacoco.reportPath>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.5.1</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.7.201606060606</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>v@{project.version}-alpha</tagNameFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <excludePackageNames>de.qaware.rat.type</excludePackageNames>
+                    <!-- add this to disable checking -->
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>aggregate</id>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                        <phase>site</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- We use this plugin to instrument all classes with the same 
+                shared configuration that will write the coverage results to the same file 
+                and where it will be appended. -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- the target of the jacoco *.exec report file -->
+                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                            <!-- create the jacoco JVM agent commandline 
+                                call and write it to an property 'surefireArgLine' -->
+                            <propertyName>surefireArgLine</propertyName>
+                            <!-- append coverage results on *.exec report 
+                                file -->
+                            <append>true</append>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- the surefireArgLine argument will be created by 
+                        the jacoco-maven-plugin on runtime and ensures that all classes get instrumented 
+                        with the same settings that are defined in the configuration of jacoco-maven-plugin -->
+                    <!--suppress MavenModelInspection -->
+                    <argLine>${surefireArgLine} -Xmx2048m</argLine>
+                    <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
+
+                    <!-- ensure we find each test -->
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+
+                    <!-- don't fail if an module doesn't define any tests, 
+                        because we have sub-projects like test-support that have classes in their 
+                        test-folders but no real tests inside -->
+                    <failIfNoTests>false</failIfNoTests>
+                </configuration>
+            </plugin>
+<!--             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.9</version>
+                <executions>
+                    <execution>
+                        <id>download-licenses</id>
+                        <goals>
+                            <goal>download-licenses</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> -->
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Internal dependencies -->
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-codec</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-codec-docx</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-executor</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-executor-cmd</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-integrationtest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-pipeline</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-pipeline-de</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.qaware</groupId>
+                <artifactId>rat-statistics</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- External dependencies -->
+            <dependency>
+                <groupId>org.apache.uima</groupId>
+                <artifactId>uimaj-core</artifactId>
+                <version>2.8.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.uima</groupId>
+                <artifactId>uimafit-core</artifactId>
+                <version>2.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.uima</groupId>
+                <artifactId>ruta-core</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.docx4j</groupId>
+                <artifactId>docx4j</artifactId>
+                <version>3.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.21</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.21</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

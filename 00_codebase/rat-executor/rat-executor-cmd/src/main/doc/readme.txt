@@ -1,0 +1,1 @@
+For information on RAT please refer to: https://github.com/qaware/readability-analysis
